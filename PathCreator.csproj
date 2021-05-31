@@ -11,10 +11,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{6765FA64-43A4-BF28-AEBA-726A02101207}</ProjectGuid>
+    <ProjectGuid>{77C20534-EF49-4D54-990A-BA2B140ABDA9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <AssemblyName>PathCreator</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -55,16 +55,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Catartsys\LargeWater_URP\Scripts\LargeWater_Grids_instanciator.cs" />
-     <Compile Include="Assets\PathCreator\Examples\Scripts\GeneratePathExample.cs" />
-     <Compile Include="Assets\PathCreator\Examples\Scripts\PathFollower.cs" />
-     <Compile Include="Assets\PathCreator\Examples\Scripts\PathPlacer.cs" />
-     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSceneTool.cs" />
-     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSpawner.cs" />
-     <Compile Include="Assets\PathCreator\Examples\Scripts\RoadMeshCreator.cs" />
-     <Compile Include="Assets\Scripts\CameraScript.cs" />
-     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-     <None Include="Assets\Catartsys\LargeWater_URP\Catartsys_LargeWater_URP_Doc.txt" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\BezierPath.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\EndOfPathInstruction.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\GlobalDisplaySettings.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\MinMax3D.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\PathCreator.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\PathCreatorData.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\PathSpace.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Objects\VertexPath.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\CubicBezierUtility.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\MathUtility.cs" />
+     <Compile Include="Assets\PathCreator\Core\Runtime\Utility\VertexPathUtility.cs" />
+     <None Include="Assets\PathCreator\Core\Runtime\PathCreator.asmdef" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
@@ -247,6 +249,21 @@
  </Reference>
  <Reference Include="UnityEditor">
  <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.VR">
+ <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Graphs">
+ <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.WindowsStandalone.Extensions">
+ <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.Android.Extensions">
+ <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="ICSharpCode.NRefactory">
+ <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/PackageCache/com.unity.render-pipelines.core@7.3.1/Editor/ShaderGenerator/ICSharpCode.NRefactory.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -593,70 +610,14 @@
  <Reference Include="System.Xml.Serialization">
  <HintPath>C:/Users/ekrysenkova/Unity/2019.4.20f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
  </Reference>
- <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Timeline.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Universal.Shaders">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
- </Reference>
- <Reference Include="Unity.VSCode.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Core.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Core.Runtime">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Universal.Runtime">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Universal.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.Universal.Editor.dll</HintPath>
+ <Reference Include="UnityEditor.UI">
+ <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
- <Reference Include="Unity.Timeline">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
- </Reference>
- <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Rider.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
- </Reference>
- <Reference Include="Unity.ShaderGraph.Editor">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor.UI">
- <HintPath>C:/Users/ekrysenkova/Desktop/HTW/Multimedia/LevelRunner/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
- </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="PathCreator.csproj">
-      <Project>{77C20534-EF49-4D54-990A-BA2B140ABDA9}</Project>
-      <Name>PathCreator</Name>
-    </ProjectReference>
-    <ProjectReference Include="PathCreatorEditor.csproj">
-      <Project>{BB4C1C47-0E29-BE87-293C-44CF14191A82}</Project>
-      <Name>PathCreatorEditor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
