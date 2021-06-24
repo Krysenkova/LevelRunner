@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public PathCreator pathCreator;
-    public float speed = 0.01f;
+    public float speed = 2f;
     private bool onLeftSide = false;
     private bool onRightSide = false;
     private bool inTheMiddle = true;
@@ -17,12 +17,17 @@ public class PlayerMovement : MonoBehaviour
     public Transform LeftPosition;
 
     private Rigidbody body;
-    public float jumpPower = 100f;
+    private Vector3 jump;
+    public float jumpPower = 2f;
+
     private bool runs = true;
     private bool jumped = false;
     private bool landed;
     private bool stumped = false;
     private bool readyToJump = true;
+
+    private int currentPath = 1; //0 - left, 1 - middle, 2- right
+
     public Transform groundPosition;
     public LayerMask layerMask;
     public Text cherriesCountText;
@@ -32,16 +37,17 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         body = GetComponent<Rigidbody>();
+        jump = new Vector3(0.0f, 2.0f, 0.0f);
         playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        cherriesCountText.text = ""+ cherriesCount; 
+        cherriesCountText.text = "" + cherriesCount;
         PlayerRun();
 
-        // PlayerLand();
+       
 
     }
 
@@ -49,61 +55,47 @@ public class PlayerMovement : MonoBehaviour
     {
         //if (!stumped)
         //{
-            playerAnimation.Run();
-            //player follows the path
+        playerAnimation.Run();
+        //player follows the path
 
-            if (inTheMiddle)
-            {
+        if (inTheMiddle)
+        {
+            currentPath = 1;
             Debug.Log("In the middle");
             transform.position = MiddlePosition.transform.position;
             transform.rotation = MiddlePosition.transform.rotation;
-            }
-            else if (onLeftSide)
-            {
+        }
+        else if (onLeftSide)
+        {
+            currentPath = 0;
             Debug.Log("On the left");
             transform.position = LeftPosition.transform.position;
             transform.rotation = LeftPosition.transform.rotation;
         }
-            else if (onRightSide)
-            {
+        else if (onRightSide)
+        {
+            currentPath = 2;
             Debug.Log("On the right");
             transform.position = RightPosition.transform.position;
             transform.rotation = RightPosition.transform.rotation;
         }
-            if (jumped)
-            {
 
-                Debug.Log("Jump!");
-                playerAnimation.Jumped();
-                body.AddForce(new Vector3(0f, jumpPower, 0f));
-                // readyToJump = false;
-                jumped = false;
-            }
+        //playerAnimation.Jumped();
+        //transform.position = transform.position + (new Vector3(0f, jumpPower, 0f));
 
-            CheckPath();
-            CheckLanded();
-            CheckJump();
-      
+
+        CheckPath();
+        CheckLanded();
+
 
     }
 
-    void CheckJump()
-    {
-        if (Input.GetKeyUp(KeyCode.Space) )
-        {
-           // readyToJump = true;
-            Debug.Log("Check jump");
-            jumped = true;
-           
-        }
-      
-    }
+
 
     void CheckLanded()
     {
-
         landed = Physics.OverlapSphere(groundPosition.position, 0.1f, layerMask).Length > 0;
-       // Debug.Log("Grounded " + landed);
+        Debug.Log("Grounded " + landed);
     }
 
     //manage right/left paths
@@ -114,14 +106,14 @@ public class PlayerMovement : MonoBehaviour
         {
             if (inTheMiddle)
             {
-                
+
                 inTheMiddle = false;
                 onRightSide = false;
                 onLeftSide = true;
             }
             else if (onRightSide)
             {
-                
+
                 onRightSide = false;
                 onLeftSide = false;
                 inTheMiddle = true;
@@ -167,6 +159,6 @@ public class PlayerMovement : MonoBehaviour
             cherriesCount++;
         }
     }
-
-
 }
+
+

@@ -29,6 +29,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         animation.Play(Tags.ANIMATION_RUN);
     }
+
+    public void Go()
+    {
+        animation.Play(Tags.ANIMATION_GO);
+    }
     // Update is called once per frame
     void Update()
     {

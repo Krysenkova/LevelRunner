@@ -6,28 +6,33 @@ using PathCreation;
 public class CameraScript : MonoBehaviour
 {
     public Transform target;
-    public float speed = 0.01f;
-    private float distance = 1f;
     private Vector3 offset;
-   // private Quaternion rotationOffset;
-    public PathCreator pathCreator;
+    private Quaternion oldRotation;
+    Vector3 position;
 
-    void Start()
+    // private Quaternion rotationOffset;
+    //public PathCreator pathCreator;
+
+    void Awake()
     {
+        position = target.position;
+        offset = transform.position - target.position;
         //let camera be behind the player while going along the path
-        offset  = new Vector3(0f, 0.3f, 0f);
-       
+        // offset  = new Vector3(0f, 0.5f, 0f);
+        // offset = transform.position - target.transform.position;
         //rotationOffset = transform.rotation * target.rotation;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        //camera follows the path
-        distance += speed * Time.deltaTime ;
-       // transform.position = target.position + offset; 
-       // transform.rotation = target.rotation;
-        transform.position = pathCreator.path.GetPointAtDistance(distance - 1.8f) + offset;
-        transform.rotation = pathCreator.path.GetRotationAtDistance(distance-1.8f);
+        Vector3 currentPos = target.position + (target.rotation * offset);
+        currentPos.y = 0.5f;
+        transform.position = currentPos;
+       
+        transform.LookAt(target);
+        // Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.
+        //transform.position = target.transform.position + offset;
 
     }
+    
 }
