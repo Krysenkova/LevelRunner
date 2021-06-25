@@ -6,26 +6,46 @@ public class ChoosingMenuPlayerMovement : MonoBehaviour
 {
     [SerializeField] private float _speed = 2;
 
-    private PlayerAnimation playerAnimation;
+    private PlayerAnimation _playerAnimation;
+    float moveHorizontal;
+    float moveVertical;
+    float angle;
 
     // Start is called before the first frame update
     void Awake()
     {
-        playerAnimation = GetComponent<PlayerAnimation>();
+        _playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
+        moveHorizontal = Input.GetAxis("Horizontal");
+        moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 move = transform.right * moveX + transform.forward * moveY;
-        transform.position += move * Time.deltaTime * _speed;
-        
-        if(Input.GetKey("up") || Input.GetKey("down") || Input.GetKey("left") || Input.GetKey("right"))
+        angle += moveVertical * 0.01f * Time.deltaTime;
+
+        Vector3 forwardDirection = Vector3.forward * _speed;
+        Vector3 rightDirection = Vector3.right * _speed;
+                            
+        transform.Translate(forwardDirection * Time.deltaTime * moveVertical * _speed);
+
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerAnimation.Go();
+            // transform.rotation *= rotation;
+            angle += 0.5f * _speed * Time.deltaTime;
         }
+        if (Input.GetKey(KeyCode.RightArrow))
+        {
+            angle -= 0.5f * _speed * Time.deltaTime;
+            //transform.rotation *= rotation;
+        }
+
+        Vector3 targetDirection = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
+        Quaternion rotation = Quaternion.LookRotation(targetDirection);
+
+        transform.rotation = rotation;
+
     }
+
 }

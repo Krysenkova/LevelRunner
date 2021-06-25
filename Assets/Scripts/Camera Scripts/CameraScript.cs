@@ -26,7 +26,7 @@ public class CameraScript : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 currentPos = target.position + (target.rotation * offset);
-        currentPos.y = 0.5f;
+       
         transform.position = currentPos;
        
         transform.LookAt(target);
