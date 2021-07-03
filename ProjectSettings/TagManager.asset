@@ -7,6 +7,8 @@ TagManager:
   - Road
   - Stump
   - Cherry
+  - Stop
+  - Level
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Minimap
   - Levels
   - Ground
-  - 
+  - Statistics
   - 
   - 
   - 

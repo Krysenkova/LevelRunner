@@ -19,94 +19,160 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody body;
     private Vector3 jump;
     public float jumpPower = 2f;
+    private bool landed;
 
     private bool runs = true;
     private bool jumped = false;
-    private bool landed;
     private bool stumped = false;
-    private bool readyToJump = true;
+    private bool isRunning;
+    private bool isJumping;
 
     private int currentPath = 1; //0 - left, 1 - middle, 2- right
-
+    private Vector3 currentPosition;
+    private Quaternion currentRotation;
     public Transform groundPosition;
-    public LayerMask layerMask;
+    [SerializeField] private LayerMask layerMask;
+    private bool canDoubleJump;
+
     public Text cherriesCountText;
     private int cherriesCount = 0;
     private PlayerAnimation playerAnimation;
 
+    private float jumpTime;
+
     void Awake()
     {
         body = GetComponent<Rigidbody>();
-        jump = new Vector3(0.0f, 2.0f, 0.0f);
+        groundPosition = transform.GetChild(3).transform;
+        jump = new Vector3(0.0f, 0.2f, 0.0f);
+        jumpTime = 0;
         playerAnimation = GetComponent<PlayerAnimation>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
         cherriesCountText.text = "" + cherriesCount;
         PlayerRun();
-
-       
-
+        if (jumpTime <= 0)
+        {
+            isJumping = false;
+        }
     }
+
 
     void PlayerRun()
     {
+        PlayerJump();
         //if (!stumped)
         //{
         playerAnimation.Run();
         //player follows the path
-
         if (inTheMiddle)
         {
             currentPath = 1;
             Debug.Log("In the middle");
-            transform.position = MiddlePosition.transform.position;
-            transform.rotation = MiddlePosition.transform.rotation;
+            currentPosition = MiddlePosition.transform.position;
+            currentRotation = MiddlePosition.transform.rotation;
+          
+
         }
         else if (onLeftSide)
         {
             currentPath = 0;
             Debug.Log("On the left");
-            transform.position = LeftPosition.transform.position;
-            transform.rotation = LeftPosition.transform.rotation;
+            currentPosition = LeftPosition.transform.position;
+            currentRotation = LeftPosition.transform.rotation;
+
         }
         else if (onRightSide)
         {
             currentPath = 2;
             Debug.Log("On the right");
-            transform.position = RightPosition.transform.position;
-            transform.rotation = RightPosition.transform.rotation;
+            currentPosition = RightPosition.transform.position;
+            currentRotation = RightPosition.transform.rotation;
+        }
+        if (isJumping)
+        {
+            playerAnimation.Jumped();
+            Debug.Log("I AM IN JUMP");
+            SetJumpTime();
+            jumpTime = jumpTime -= Time.deltaTime;
+            Debug.Log("Time: " + jumpTime);
+           // body.velocity = Vector3.up * jumpPower;
+            //body.AddForce(jump, ForceMode.Impulse);
+            currentPosition = new Vector3(currentPosition.x, 1f, currentPosition.z);
+                if (currentPath == 1)
+                {
+                    Debug.Log("GettingBack to 1");
+                    inTheMiddle = true;
+
+                }
+
         }
 
-        //playerAnimation.Jumped();
-        //transform.position = transform.position + (new Vector3(0f, jumpPower, 0f));
-
-
+        transform.position = currentPosition;
+        transform.rotation = currentRotation;
+        
         CheckPath();
-        CheckLanded();
+       
+
 
 
     }
 
+    void SetJumpTime()
+    {
+        jumpTime = 0.008f;
+    }
+
+    void PlayerJump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumping = true;
+            onRightSide = false;
+            onLeftSide = false;
+            inTheMiddle = false;
+
+            //  transform.position = new Vector3(transform.position.x, 2.0f, transform.position.z);
+        }
+        // if (Input.GetKeyDown(KeyCode.Space))
+        //  {
+        //if (CheckLanded())
+        //     isRunning = false;
+
+        //    canDoubleJump = true;
+        // currentPosition = new Vector3(currentPosition.x, currentPosition.y + jumpPower, currentPosition.z);
+        //        body.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
+        //  }
+        // isRunning = false;
+        // body.velocity = Vector3.up * jumpPower;
+        //    Debug.Log("JUMP");
+
+        // }
+        // if(Input.GetKeyUp(KeyCode.Space) && !landed)
+        // {
+        //     isRunning = true;
+
+    }
 
 
-    void CheckLanded()
+    bool CheckLanded()
     {
         landed = Physics.OverlapSphere(groundPosition.position, 0.1f, layerMask).Length > 0;
-        Debug.Log("Grounded " + landed);
+        return landed;
     }
 
     //manage right/left paths
     void CheckPath()
     {
-
+        //implement smooth pathchange
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (inTheMiddle)
             {
-
                 inTheMiddle = false;
                 onRightSide = false;
                 onLeftSide = true;
@@ -158,6 +224,17 @@ public class PlayerMovement : MonoBehaviour
             other.gameObject.SetActive(false);
             cherriesCount++;
         }
+        if (other.gameObject.CompareTag("Stop"))
+        {
+            isRunning = false;
+            playerAnimation.RunLeft();
+            playerAnimation.RunLeft();
+        }
+    }
+
+    void OnCollisionStay()
+    {
+        landed = true;
     }
 }
 

@@ -34,6 +34,17 @@ public class PlayerAnimation : MonoBehaviour
     {
         animation.Play(Tags.ANIMATION_GO);
     }
+
+    public void GoBack()
+    {
+        animation.Play(Tags.ANIMATION_GO_BACK);
+    }
+
+    public void RunLeft()
+    {
+        animation.Play(Tags.ANIMATION_RUN_LEFT);
+    }
+
     // Update is called once per frame
     void Update()
     {

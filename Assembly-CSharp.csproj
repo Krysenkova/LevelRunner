@@ -56,6 +56,7 @@
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSpawner.cs" />
     <Compile Include="Assets\Scripts\ManagerScript.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\GeneratePathExample.cs" />
+    <Compile Include="Assets\Scripts\Camera Scripts\LevelChoosingMenuCameraScript.cs" />
     <Compile Include="Assets\AurynSky\Gems Ultimate Pack\Scripts\AnimationScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\ChoosingMenuPlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\Movement.cs" />
@@ -63,12 +64,16 @@
     <Compile Include="Assets\Scripts\Player Scripts\PlayerAnimation.cs" />
     <Compile Include="Assets\Scripts\Camera Scripts\CameraScript.cs" />
     <Compile Include="Assets\Scripts\Player Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\ObstacleScript.cs" />
+    <Compile Include="Assets\Scripts\LevelsController.cs" />
     <Compile Include="Assets\Scripts\Tags.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathSceneTool.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\PathFollower.cs" />
     <Compile Include="Assets\Scripts\CollectableScript.cs" />
+    <Compile Include="Assets\Scripts\StatisticBoardScript.cs" />
     <Compile Include="Assets\PathCreator\Examples\Scripts\RoadMeshCreator.cs" />
-    <Compile Include="Assets\Scripts\Camera Scripts\LevelChoosingMenuCameraScript.cs" />
+    <Compile Include="Assets\Scripts\Level.cs" />
+    <Compile Include="Assets\Scripts\GameController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

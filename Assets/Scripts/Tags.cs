@@ -15,5 +15,15 @@ public class Tags
     public static string ANIMATION_PAWS_ATTACK = "Fox_Attack_Paws";
     public static string ANIMATION_SOMERSAULT = "Fox_Somersault";
     public static string ANIMATION_GO = "Fox_Walk";
+    public static string ANIMATION_GO_BACK = "Fox_Walk_Back_InPlace";
+    public static string ANIMATION_RUN_LEFT = "Fox_Run_Left";
 
+    //level tags
+    public static string LEVEL_ONE = "LevelOne";
+    public static string LEVEL_TWO = "LevelTwo";
+    public static string LEVEL_THREE = "LevelThree";
+    public static string LEVEL_FOUR = "LevelFour";
+    public static string LEVEL_FIVE = "LevelFive";
+    public static string LEVEL_SIX = "LevelSix";
+    public static string LEVEL_SEVEN = "LevelSeven";
 }

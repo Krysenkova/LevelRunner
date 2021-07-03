@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ChoosingMenuPlayerMovement : MonoBehaviour
 {
@@ -32,13 +33,19 @@ public class ChoosingMenuPlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            // transform.rotation *= rotation;
             angle += 0.5f * _speed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
             angle -= 0.5f * _speed * Time.deltaTime;
-            //transform.rotation *= rotation;
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            _playerAnimation.Go();
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            _playerAnimation.GoBack();
         }
 
         Vector3 targetDirection = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
@@ -46,6 +53,21 @@ public class ChoosingMenuPlayerMovement : MonoBehaviour
 
         transform.rotation = rotation;
 
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Level"))
+        {
+            var goName = other.gameObject.name;
+            Debug.Log(goName);
+            switch (goName)
+            {
+                case "LevelOne":
+                    SceneManager.LoadScene(Tags.LEVEL_ONE_SCENE);
+                    break;
+            }
+        }
     }
 
 }
