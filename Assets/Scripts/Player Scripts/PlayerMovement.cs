@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
         groundPosition = transform.GetChild(3).transform;
         jump = new Vector3(0.0f, 0.2f, 0.0f);
         jumpTime = 0;
+        isRunning = true;
         playerAnimation = GetComponent<PlayerAnimation>();
     }
 
@@ -54,7 +55,10 @@ public class PlayerMovement : MonoBehaviour
     {
 
         cherriesCountText.text = "" + cherriesCount;
-        PlayerRun();
+        if (isRunning)
+        {
+            PlayerRun();
+        }
         if (jumpTime <= 0)
         {
             isJumping = false;
@@ -228,14 +232,9 @@ public class PlayerMovement : MonoBehaviour
         {
             isRunning = false;
             playerAnimation.RunLeft();
-            playerAnimation.RunLeft();
         }
     }
 
-    void OnCollisionStay()
-    {
-        landed = true;
-    }
 }
 
 

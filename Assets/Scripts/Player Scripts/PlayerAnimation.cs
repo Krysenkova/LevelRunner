@@ -45,9 +45,4 @@ public class PlayerAnimation : MonoBehaviour
         animation.Play(Tags.ANIMATION_RUN_LEFT);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

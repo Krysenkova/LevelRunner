@@ -22,4 +22,5 @@ public class Movement : MonoBehaviour
         transform.position = pathCreator.path.GetPointAtDistance(distance);
         transform.rotation = pathCreator.path.GetRotationAtDistance(distance);
     }
+
 }
