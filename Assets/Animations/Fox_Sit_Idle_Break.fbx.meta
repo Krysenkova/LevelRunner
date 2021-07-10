@@ -1,12 +1,17 @@
 fileFormatVersion: 2
-guid: ce33bd1fdecb0de4dba1419f7763a5b0
+guid: d606362d2cd19554aaf474b16d557924
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: Fox_Somersault
-  externalObjects: {}
+    second: Fox_Sit_Idle_Break
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 08 - Default
+    second: {fileID: 2100000, guid: 4ad23863efbf001479d8ebd01ef00654, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -35,11 +40,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Fox_Somersault
+      name: Fox_Sit_Idle_Break
       takeName: Take 001
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 60
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

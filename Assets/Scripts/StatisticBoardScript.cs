@@ -5,18 +5,25 @@ using UnityEngine.UI;
 
 public class StatisticBoardScript : MonoBehaviour
 {
+
+    Text text;
+    Text number;
     // Start is called before the first frame update
     void Start()
     {
         GameObject levelText = GameObject.Find("LevelText");
-        Text text = levelText.GetComponent<Text>();
+        text = levelText.GetComponent<Text>();
         text.text = "Welcome!";
+        GameObject cherrieslText = GameObject.Find("Cherries");
+        number = cherrieslText.GetComponent<Text>();
+        number.text = "Your cherries: " + 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        text.text = " You completed " + GameController.controller.GetLevel() + " level";
+        number.text = "Your cherries: " + GameController.controller.GetTotalAmountOfCherries();
     }
 
 }

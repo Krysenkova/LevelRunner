@@ -66,6 +66,9 @@ public class ChoosingMenuPlayerMovement : MonoBehaviour
                 case "LevelOne":
                     SceneManager.LoadScene(Tags.LEVEL_ONE_SCENE);
                     break;
+                case "LevelTwo":
+                    SceneManager.LoadScene(Tags.LEVEL_TWO_SCENE);
+                    break;
             }
         }
     }

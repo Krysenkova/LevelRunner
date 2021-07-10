@@ -45,4 +45,8 @@ public class PlayerAnimation : MonoBehaviour
         animation.Play(Tags.ANIMATION_RUN_LEFT);
     }
 
+    public void Stop()
+    {
+        animation.Stop();
+    }
 }

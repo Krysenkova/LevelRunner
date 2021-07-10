@@ -1,25 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
     public static GameController controller;
-    public int level;
-    public int cherriesTotalAmount;
+    private int level = 0;
+    private int cherriesTotalAmount = 0;
+    private int cherriesInLevel;
 
     // Start is called before the first frame update
     void Awake()
     {
-        if (controller == null)
-        {
-            DontDestroyOnLoad(gameObject);
-            controller = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        DontDestroyOnLoad(gameObject);
+        controller = this;
 
     }
 
@@ -29,23 +24,28 @@ public class GameController : MonoBehaviour
 
     }
 
-    int GetLevel()
+    public int GetLevel()
     {
         return level;
     }
 
-    int GetTotalAmountOfCherries()
+    public int GetTotalAmountOfCherries()
     {
         return cherriesTotalAmount;
     }
 
-    void SetLevel(int level)
+    public void SetLevel(int level)
     {
         this.level = level;
     }
 
-    void SetTotalAmountOfCherries(int cherries)
+    public void SetTotalAmountOfCherries(int cherries)
     {
-        this.cherriesTotalAmount = cherries;
+        this.cherriesTotalAmount += cherries;
+    }
+
+    public void SetCherriesInLevel(int cherries)
+    {
+        this.cherriesInLevel = cherries;
     }
 }

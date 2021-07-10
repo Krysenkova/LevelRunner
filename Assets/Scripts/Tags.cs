@@ -7,6 +7,7 @@ public class Tags
     //scene names tags
     public static string LEVEL_CHOOSING_MENU_SCENE = "LevelChoosingMenu";
     public static string LEVEL_ONE_SCENE = "LevelOne";
+    public static string LEVEL_TWO_SCENE = "LevelTwo";
 
     //player animation tags
     public static string ANIMATION_IDLE = "Fox_Idle";

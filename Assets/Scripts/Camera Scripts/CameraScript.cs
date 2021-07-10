@@ -13,10 +13,12 @@ public class CameraScript : MonoBehaviour
     // private Quaternion rotationOffset;
     //public PathCreator pathCreator;
 
-    void Awake()
+    void Start()
     {
-        position = target.position;
-        offset = transform.position - target.position;
+
+            position = target.position;
+            offset = transform.position - target.position;
+
         //let camera be behind the player while going along the path
         // offset  = new Vector3(0f, 0.5f, 0f);
         // offset = transform.position - target.transform.position;
@@ -25,6 +27,7 @@ public class CameraScript : MonoBehaviour
 
     void FixedUpdate()
     {
+
         Vector3 currentPos = target.position + (target.rotation * offset);
        
         transform.position = currentPos;

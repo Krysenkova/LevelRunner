@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PathCreation;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -15,17 +16,16 @@ public class PlayerMovement : MonoBehaviour
     public Transform MiddlePosition;
     public Transform RightPosition;
     public Transform LeftPosition;
-
+    private GameObject _directionPosition;
     private Rigidbody body;
     private Vector3 jump;
     public float jumpPower = 2f;
     private bool landed;
 
     private bool runs = true;
-    private bool jumped = false;
+    private bool jumped;
     private bool stumped = false;
     private bool isRunning;
-    private bool isJumping;
 
     private int currentPath = 1; //0 - left, 1 - middle, 2- right
     private Vector3 currentPosition;
@@ -37,32 +37,34 @@ public class PlayerMovement : MonoBehaviour
     public Text cherriesCountText;
     private int cherriesCount = 0;
     private PlayerAnimation playerAnimation;
+    [SerializeField] private Animator _animator;
 
     private float jumpTime;
+    private bool endAnim;
 
     void Awake()
     {
         body = GetComponent<Rigidbody>();
-        groundPosition = transform.GetChild(3).transform;
+        groundPosition = transform.GetChild(2).transform;
         jump = new Vector3(0.0f, 0.2f, 0.0f);
         jumpTime = 0;
         isRunning = true;
         playerAnimation = GetComponent<PlayerAnimation>();
+        endAnim = false;
+        jumped = false;
+        _directionPosition = GameObject.Find("DirectionPosition");
     }
 
     // Update is called once per frame
     void Update()
     {
-
         cherriesCountText.text = "" + cherriesCount;
         if (isRunning)
         {
             PlayerRun();
         }
-        if (jumpTime <= 0)
-        {
-            isJumping = false;
-        }
+        _animator.SetBool("endAnim", endAnim);
+        _animator.SetBool("jump", jumped);
     }
 
 
@@ -71,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
         PlayerJump();
         //if (!stumped)
         //{
-        playerAnimation.Run();
+      //  playerAnimation.Run();
         //player follows the path
         if (inTheMiddle)
         {
@@ -97,9 +99,9 @@ public class PlayerMovement : MonoBehaviour
             currentPosition = RightPosition.transform.position;
             currentRotation = RightPosition.transform.rotation;
         }
-        if (isJumping)
+       /* if (isJumping)
         {
-            playerAnimation.Jumped();
+           // playerAnimation.Jumped();
             Debug.Log("I AM IN JUMP");
             SetJumpTime();
             jumpTime = jumpTime -= Time.deltaTime;
@@ -114,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 
                 }
 
-        }
+        }*/
 
         transform.position = currentPosition;
         transform.rotation = currentRotation;
@@ -126,20 +128,17 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void SetJumpTime()
+    /*void SetJumpTime()
     {
         jumpTime = 0.008f;
-    }
+    }*/
 
     void PlayerJump()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            isJumping = true;
-            onRightSide = false;
-            onLeftSide = false;
-            inTheMiddle = false;
-
+            jumped = true;
+            body.AddForce(jump * 2f, ForceMode.Impulse);
             //  transform.position = new Vector3(transform.position.x, 2.0f, transform.position.z);
         }
         // if (Input.GetKeyDown(KeyCode.Space))
@@ -230,8 +229,17 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Stop"))
         {
+           // playerAnimation.Stop();
+
             isRunning = false;
-            playerAnimation.RunLeft();
+            endAnim = true;
+            Controller.menuController.LevelEnded();
+            GameController.controller.SetTotalAmountOfCherries(cherriesCount);
+            Scene scene = SceneManager.GetActiveScene();
+            if ( scene.name == Tags.LEVEL_ONE_SCENE)
+            {
+                GameController.controller.SetLevel(1);
+            }
         }
     }
 

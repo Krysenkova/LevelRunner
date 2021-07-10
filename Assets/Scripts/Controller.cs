@@ -9,11 +9,16 @@ public class Controller : MonoBehaviour
     public GameObject startMenu;
     public GameObject pauseMenu;
     public GameObject quitMenu;
+    public GameObject levelCompleted;
+    public GameObject camera;
 
-    void Start()
+    public static Controller menuController;
+    void Awake()
     {
-        Time.timeScale = 0;
+        menuController = this;
+        DontDestroyOnLoad(gameObject);
         startMenu.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void StartLevel()
@@ -61,5 +66,10 @@ public class Controller : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
+    }
+
+    public void LevelEnded()
+    {
+        levelCompleted.SetActive(true);
     }
 }
