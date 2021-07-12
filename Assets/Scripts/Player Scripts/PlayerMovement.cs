@@ -199,8 +199,10 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!roll)
             {
-                caught = true;
                 isRunning = false;
+                caught = true;
+              
+                Controller.menuController.AktivateStumpedMenu();
             }
             if(roll)
             {
