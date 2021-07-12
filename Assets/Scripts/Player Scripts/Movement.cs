@@ -8,11 +8,9 @@ public class Movement : MonoBehaviour
     public PathCreator pathCreator;
     public float speed = 0.01f;
     private float distance;
-    private Rigidbody body;
 
     void Awake()
     {
-        body = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -22,5 +20,4 @@ public class Movement : MonoBehaviour
         transform.position = pathCreator.path.GetPointAtDistance(distance);
         transform.rotation = pathCreator.path.GetRotationAtDistance(distance);
     }
-
 }

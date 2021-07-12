@@ -10,19 +10,22 @@ public class Controller : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject quitMenu;
     public GameObject levelCompleted;
+    public GameObject stumpedMenu;
     public GameObject camera;
+    public Text cherriesCount;
 
     public static Controller menuController;
     void Awake()
     {
         menuController = this;
-        DontDestroyOnLoad(gameObject);
         startMenu.SetActive(true);
         Time.timeScale = 0;
+        Debug.Log("awake");
     }
 
     public void StartLevel()
     {
+        Debug.Log("start level called");
         startMenu.SetActive(false);
         Time.timeScale = 1;
     }
@@ -45,7 +48,15 @@ public class Controller : MonoBehaviour
         quitMenu.SetActive(false);
         Time.timeScale = 1;
     }
-    // Update is called once per frame
+    public void StartAfterStumped()
+    {
+        stumpedMenu.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void AktivateStumpedMenu()
+    {
+        stumpedMenu.SetActive(true);
+    }
     void Update()
     {
         Pause();
@@ -68,8 +79,10 @@ public class Controller : MonoBehaviour
         }
     }
 
-    public void LevelEnded()
+    public void LevelEnded(int cherries)
     {
         levelCompleted.SetActive(true);
+        cherriesCount.text = "You collected " + cherries + " cherries";
+        GameController.cherriesTotalAmount += cherries;
     }
 }

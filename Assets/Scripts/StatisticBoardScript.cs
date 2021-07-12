@@ -11,6 +11,7 @@ public class StatisticBoardScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
         GameObject levelText = GameObject.Find("LevelText");
         text = levelText.GetComponent<Text>();
         text.text = "Welcome!";
@@ -22,8 +23,9 @@ public class StatisticBoardScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = " You completed " + GameController.controller.GetLevel() + " level";
-        number.text = "Your cherries: " + GameController.controller.GetTotalAmountOfCherries();
+        text.text = " You completed " + GameController.level + " level";
+        number.text = "Your cherries: " + GameController.cherriesTotalAmount;
+
     }
 
 }

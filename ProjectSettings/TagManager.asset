@@ -9,6 +9,7 @@ TagManager:
   - Cherry
   - Stop
   - Level
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -20,10 +21,10 @@ TagManager:
   - Levels
   - Ground
   - Statistics
-  - 
-  - 
-  - 
-  - 
+  - ActiveLevel
+  - ClosedLevel
+  - AlreadyPlayedLevel
+  - ComingSoonLevel
   - 
   - 
   - 

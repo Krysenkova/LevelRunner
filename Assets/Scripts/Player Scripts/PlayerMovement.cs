@@ -17,157 +17,122 @@ public class PlayerMovement : MonoBehaviour
     public Transform RightPosition;
     public Transform LeftPosition;
     private GameObject _directionPosition;
-    private Rigidbody body;
-    private Vector3 jump;
-    public float jumpPower = 2f;
-    private bool landed;
 
-    private bool runs = true;
+    private CapsuleCollider foxCollider;
+    private Vector3 usualColliderPosition;
+
     private bool jumped;
     private bool stumped = false;
     private bool isRunning;
 
-    private int currentPath = 1; //0 - left, 1 - middle, 2- right
     private Vector3 currentPosition;
     private Quaternion currentRotation;
-    public Transform groundPosition;
-    [SerializeField] private LayerMask layerMask;
-    private bool canDoubleJump;
 
     public Text cherriesCountText;
-    private int cherriesCount = 0;
+    private int cherriesCount;
+
     private PlayerAnimation playerAnimation;
     [SerializeField] private Animator _animator;
 
-    private float jumpTime;
     private bool endAnim;
+    private bool caught;
+    private bool roll;
 
     void Awake()
     {
-        body = GetComponent<Rigidbody>();
-        groundPosition = transform.GetChild(2).transform;
-        jump = new Vector3(0.0f, 0.2f, 0.0f);
-        jumpTime = 0;
+        foxCollider = GetComponent<CapsuleCollider>();
+        cherriesCount = 0;
         isRunning = true;
         playerAnimation = GetComponent<PlayerAnimation>();
         endAnim = false;
         jumped = false;
+        caught = false;
+        roll = false;
         _directionPosition = GameObject.Find("DirectionPosition");
+        usualColliderPosition = foxCollider.center;
     }
 
-    // Update is called once per frame
     void Update()
     {
         cherriesCountText.text = "" + cherriesCount;
+
         if (isRunning)
         {
             PlayerRun();
         }
+
+        //update animator values to stop/start animations
         _animator.SetBool("endAnim", endAnim);
         _animator.SetBool("jump", jumped);
+        _animator.SetBool("stumped", stumped);
+        _animator.SetBool("caught", caught);
+        _animator.SetBool("roll", roll);
     }
 
+    //waiter for jump animation
+    IEnumerator StopJumping()
+    {
+        yield return new WaitForSeconds(0.8f);
+        jumped = false;
+        foxCollider.center = usualColliderPosition;
+        roll = false;
+    }
 
+    //manage player position on paths
     void PlayerRun()
     {
         PlayerJump();
-        //if (!stumped)
-        //{
-      //  playerAnimation.Run();
-        //player follows the path
+        PlayerRoll();
         if (inTheMiddle)
         {
-            currentPath = 1;
+
             Debug.Log("In the middle");
             currentPosition = MiddlePosition.transform.position;
             currentRotation = MiddlePosition.transform.rotation;
-          
-
         }
         else if (onLeftSide)
         {
-            currentPath = 0;
+
             Debug.Log("On the left");
             currentPosition = LeftPosition.transform.position;
             currentRotation = LeftPosition.transform.rotation;
-
         }
         else if (onRightSide)
         {
-            currentPath = 2;
+
             Debug.Log("On the right");
             currentPosition = RightPosition.transform.position;
             currentRotation = RightPosition.transform.rotation;
         }
-       /* if (isJumping)
-        {
-           // playerAnimation.Jumped();
-            Debug.Log("I AM IN JUMP");
-            SetJumpTime();
-            jumpTime = jumpTime -= Time.deltaTime;
-            Debug.Log("Time: " + jumpTime);
-           // body.velocity = Vector3.up * jumpPower;
-            //body.AddForce(jump, ForceMode.Impulse);
-            currentPosition = new Vector3(currentPosition.x, 1f, currentPosition.z);
-                if (currentPath == 1)
-                {
-                    Debug.Log("GettingBack to 1");
-                    inTheMiddle = true;
-
-                }
-
-        }*/
 
         transform.position = currentPosition;
         transform.rotation = currentRotation;
-        
+
         CheckPath();
-       
-
-
 
     }
 
-    /*void SetJumpTime()
-    {
-        jumpTime = 0.008f;
-    }*/
-
+    //control jump when space is clicked
     void PlayerJump()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumped = true;
-            body.AddForce(jump * 2f, ForceMode.Impulse);
-            //  transform.position = new Vector3(transform.position.x, 2.0f, transform.position.z);
+            foxCollider.center = new Vector3(0f, 1.2f, 0f);
+            //just 0.8 sec for fox to jump
+            StartCoroutine(StopJumping());
         }
-        // if (Input.GetKeyDown(KeyCode.Space))
-        //  {
-        //if (CheckLanded())
-        //     isRunning = false;
-
-        //    canDoubleJump = true;
-        // currentPosition = new Vector3(currentPosition.x, currentPosition.y + jumpPower, currentPosition.z);
-        //        body.AddForce(new Vector3(0f, 10f, 0f), ForceMode.Impulse);
-        //  }
-        // isRunning = false;
-        // body.velocity = Vector3.up * jumpPower;
-        //    Debug.Log("JUMP");
-
-        // }
-        // if(Input.GetKeyUp(KeyCode.Space) && !landed)
-        // {
-        //     isRunning = true;
 
     }
 
-
-    bool CheckLanded()
+    void PlayerRoll()
     {
-        landed = Physics.OverlapSphere(groundPosition.position, 0.1f, layerMask).Length > 0;
-        return landed;
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            roll = true;
+            StartCoroutine(StopJumping());
+        }
     }
-
     //manage right/left paths
     void CheckPath()
     {
@@ -214,12 +179,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //manage collisions with collectables/obstacles, etc...
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Stump"))
         {
-            // stumped = true;
-            Time.timeScale = 0;
+            isRunning = false;
+            stumped = true;
+            Controller.menuController.AktivateStumpedMenu();
+            //Time.timeScale = 0;
             Debug.Log("Stumped");
         }
         if (other.gameObject.CompareTag("Cherry"))
@@ -227,18 +195,34 @@ public class PlayerMovement : MonoBehaviour
             other.gameObject.SetActive(false);
             cherriesCount++;
         }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            if (!roll)
+            {
+                caught = true;
+                isRunning = false;
+            }
+            if(roll)
+            {
+                other.gameObject.SetActive(false);
+            }
+        }
         if (other.gameObject.CompareTag("Stop"))
         {
-           // playerAnimation.Stop();
 
             isRunning = false;
             endAnim = true;
-            Controller.menuController.LevelEnded();
-            GameController.controller.SetTotalAmountOfCherries(cherriesCount);
+            Controller.menuController.LevelEnded(cherriesCount);
             Scene scene = SceneManager.GetActiveScene();
-            if ( scene.name == Tags.LEVEL_ONE_SCENE)
+            if (scene.name == Tags.LEVEL_ONE_SCENE)
             {
-                GameController.controller.SetLevel(1);
+                GameController.level = 1;
+
+            }
+            if (scene.name == Tags.LEVEL_TWO_SCENE)
+            {
+                GameController.level = 2;
+
             }
         }
     }

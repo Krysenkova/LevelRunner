@@ -12,13 +12,11 @@ public class ChoosingMenuPlayerMovement : MonoBehaviour
     float moveVertical;
     float angle;
 
-    // Start is called before the first frame update
     void Awake()
     {
         _playerAnimation = GetComponent<PlayerAnimation>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         moveHorizontal = Input.GetAxis("Horizontal");
@@ -55,6 +53,7 @@ public class ChoosingMenuPlayerMovement : MonoBehaviour
 
     }
 
+    //manage collisions with levels
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Level"))

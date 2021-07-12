@@ -3,49 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class GameController: MonoBehaviour
 {
-    public static GameController controller;
-    private int level = 0;
-    private int cherriesTotalAmount = 0;
-    private int cherriesInLevel;
+    //static properties for passing values from one scene to another
+    public static int level;
+    public static int cherriesTotalAmount;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-        controller = this;
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public int GetLevel()
-    {
-        return level;
-    }
-
-    public int GetTotalAmountOfCherries()
-    {
-        return cherriesTotalAmount;
-    }
-
-    public void SetLevel(int level)
-    {
-        this.level = level;
-    }
-
-    public void SetTotalAmountOfCherries(int cherries)
-    {
-        this.cherriesTotalAmount += cherries;
-    }
-
-    public void SetCherriesInLevel(int cherries)
-    {
-        this.cherriesInLevel = cherries;
-    }
 }
